@@ -25,7 +25,7 @@ import Redis from "ioredis";
       },
     },
   ],
-  exports: [RedisService, CacheModule],
+  exports: [RedisService, CacheModule, 'REDIS_CLIENT'],
 })
 export class RedisModule {
 }
