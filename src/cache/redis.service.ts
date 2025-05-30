@@ -12,11 +12,11 @@ export class RedisService {
   async get<T>(key: string): Promise<T | null> {
     try {
       const value = await this.cacheManager.get<T>(key);
-      if (value) this.logger.debug(`Cache HIT for key: ${ key }`);
-      else this.logger.debug(`Cache MISS for key: ${ key }`);
+      if (value) this.logger.debug(`히트 key: ${ key }`);
+      else this.logger.debug(`미스 key: ${ key }`);
       return value;
     } catch (err) {
-      this.logger.error(`Redis get error for key: ${ key }`, err.stack);
+      this.logger.error(`오류 : ${ key }`, err.stack);
       return null;
     }
   }
@@ -25,7 +25,7 @@ export class RedisService {
     try {
       await this.cacheManager.set(key, value, ttlSeconds * 1000);
     } catch (err) {
-      this.logger.error(`Redis set error for key: ${ key }`, err.stack);
+      this.logger.error(`오류 : ${ key }`, err.stack);
     }
   }
 }
