@@ -20,6 +20,9 @@ export class UsersService {
     if (!user) throw new NotFoundException('not fount');
     await this.redisService.set(key, user, 60)
     return user;
+  }
 
+  async getAll() {
+    return await this.redisService.allGet();
   }
 }

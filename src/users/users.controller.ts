@@ -12,4 +12,10 @@ export class UsersController {
     return this.usersService.getUser(id);
   }
 
+  @Get()
+  @HttpCode(200)
+  getAll(){
+    return this.usersService.getAll();
+  }
+
 }
