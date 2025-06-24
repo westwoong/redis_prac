@@ -16,6 +16,8 @@ datasource db {
 model users {
   id   Int    @id @default(autoincrement()) @map("id")
   name String @map("name")
+  
+  dailyRankings DailyRanking[] @relation("UserDailyRankings")
 }
 
 model cacheLog {
@@ -23,4 +25,18 @@ model cacheLog {
   hit       Boolean
   key       String   @map("key")
   createdAt DateTime @default(now()) @map("created_at")
+}
+
+model DailyRanking {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  score     Int      @map("score")
+  rank      Int      @map("rank")
+  date      DateTime @map("date")
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  user      users    @relation("UserDailyRankings", fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("daily_rankings")
+  @@unique([userId, date])
 }
