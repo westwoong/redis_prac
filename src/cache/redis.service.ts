@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import type { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import Redis from "ioredis";
@@ -11,6 +11,17 @@ export class RedisService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject('REDIS_CLIENT') private redisClient: Redis,
   ) {
+  }
+
+  async zset(key: string, score: number, userId: number) {
+    try {
+      const userScore = await this.redisClient.zincrby(key, score, userId);
+      this.logger.log(`zet KEY ${key} score: ${score} userId: ${userId}`);
+      return parseFloat(userScore);
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async allGet() {
