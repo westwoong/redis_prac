@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { RankingService } from './ranking.service';
 import { RedisModule } from '../cache/redis.module';
 import { PrismaModule } from '../orm/prisma.module';
+import { RankingController } from './ranking.controller';
 
 @Module({
   imports: [
@@ -14,5 +15,7 @@ import { PrismaModule } from '../orm/prisma.module';
   exports: [
     RankingService,
   ],
+  controllers: [RankingController],
 })
-export class RankingModule {} 
+export class RankingModule {
+}
