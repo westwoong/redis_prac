@@ -17,12 +17,21 @@ export class RankingService {
     const { score, userId } = data;
     const isExistUser = await this.prismaService.users.findUnique({ where: { id: userId } });
     if (!isExistUser) throw new NotFoundException();
+    const today = this.formatDate(new Date());
+    const redisDailyRankingKey = `userRanking:daily:${ today }`;
+
     try {
-      await this.prismaService.dailyRanking.create({ data: { userId: userId, score: score } });
+      await this.redisClient.zincrby(redisDailyRankingKey, score, userId);
     } catch (error) {
       this.logger.error(error);
     }
     this.logger.debug(`점수 추가 : ${ score } 사용자 ${ userId }`);
   }
 
-} 
+  private formatDate(date: Date) { // YYYY-MM -DD
+    let year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    return `${ year }-${ month }-${ day }`;
+  }
+}
