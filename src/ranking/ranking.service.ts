@@ -1,14 +1,14 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import Redis from 'ioredis';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../orm/prisma.service';
 import { ScoreRequestDto } from "../score/dto/score.req.dto";
+import { RedisService } from "../cache/redis.service";
 
 @Injectable()
 export class RankingService {
   private readonly logger = new Logger(RankingService.name);
 
   constructor(
-    @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
+    private readonly redisService: RedisService,
     private readonly prismaService: PrismaService,
   ) {
   }
@@ -21,11 +21,11 @@ export class RankingService {
     const redisDailyRankingKey = `userRanking:daily:${ today }`;
 
     try {
-      await this.redisClient.zincrby(redisDailyRankingKey, score, userId);
+      await this.redisService.zset(redisDailyRankingKey, score, userId);
     } catch (error) {
       this.logger.error(error);
     }
-    this.logger.debug(`점수 추가 : ${ score } 사용자 ${ userId }`);
+    this.logger.debug(`키 : ${redisDailyRankingKey} 점수 추가 : ${ score } 사용자 ${ userId }`);
   }
 
   private formatDate(date: Date) { // YYYY-MM -DD
