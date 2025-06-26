@@ -15,7 +15,7 @@ export class RedisService {
 
   async zset(key: string, score: number, userId: number) {
     try {
-      const userScore = await this.redisClient.zincrby(key, score, userId);
+      const userScore = await this.redisClient.zincrby(key, score, userId.toString());
       this.logger.log(`zet KEY ${key} score: ${score} userId: ${userId}`);
       return parseFloat(userScore);
     } catch (error) {
@@ -24,10 +24,10 @@ export class RedisService {
     }
   }
 
-  async zGetDesc(key: string, userId: string) {
+  async zGetDesc(key: string, userId: number) {
     try {
-      const rank = await this.redisClient.zrevrank(key, userId);
-      const score = await this.redisClient.zscore(key, userId);
+      const rank = await this.redisClient.zrevrank(key, userId.toString());
+      const score = await this.redisClient.zscore(key, userId.toString());
       this.logger.log(`zet KEY ${key} score: ${rank}`);
       return {rank, score};
     } catch (error) {
