@@ -24,6 +24,18 @@ export class RedisService {
     }
   }
 
+  async zGetDesc(key: string, userId: string) {
+    try {
+      const rank = await this.redisClient.zrevrank(key, userId);
+      const score = await this.redisClient.zscore(key, userId);
+      this.logger.log(`zet KEY ${key} score: ${rank}`);
+      return {rank, score};
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   async allGet() {
     try {
       const keys = await this.redisClient.keys('*');
@@ -49,11 +61,11 @@ export class RedisService {
   async get<T>(key: string): Promise<T | null> {
     try {
       const value = await this.cacheManager.get<T>(key);
-      if (value) this.logger.debug(`히트 key: ${ key }`);
-      else this.logger.debug(`미스 key: ${ key }`);
+      if (value) this.logger.debug(`히트 key: ${key}`);
+      else this.logger.debug(`미스 key: ${key}`);
       return value;
     } catch (err) {
-      this.logger.error(`오류 : ${ key }`, err.stack);
+      this.logger.error(`오류 : ${key}`, err.stack);
       return null;
     }
   }
@@ -62,7 +74,7 @@ export class RedisService {
     try {
       await this.cacheManager.set(key, value, ttlSeconds * 1000);
     } catch (err) {
-      this.logger.error(`오류 : ${ key }`, err.stack);
+      this.logger.error(`오류 : ${key}`, err.stack);
     }
   }
 }

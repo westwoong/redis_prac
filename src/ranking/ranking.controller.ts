@@ -8,7 +8,7 @@ export class RankingController {
 
   @Get(':userId')
   @HttpCode(HttpStatus.OK)
-  getUserRanking(@Param('userId', ParseIntPipe) userId: number) {
-    return userId;
+  getUserRanking(@Param('userId') userId: string) {
+    return this.rankingService.getRankingDesc(userId);
   }
 }
