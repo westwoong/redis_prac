@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './mongoPost.repository';
 import { ConfigService } from '@nestjs/config';
@@ -15,5 +15,10 @@ export class PostController {
     @Post()
     async createPost(@Body() createPostDto: CreatePostDto) {
         return this.postService.createPost(createPostDto);
+    }
+
+    @Delete(':id')
+    async deletePost(@Param('id') postObjectId: string) {
+        return this.postService.deletePost(postObjectId);
     }
 }

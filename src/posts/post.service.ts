@@ -6,6 +6,10 @@ export class PostService {
     constructor(private readonly postRepository: MongoPostRepository) {}
 
     async createPost(createPostDto: CreatePostDto) {
-        return this.postRepository.create(createPostDto);
+        return this.postRepository.createPost(createPostDto);
+    }
+
+    async deletePost(postObjectId: string) {
+        return this.postRepository.deletePost(postObjectId);
     }
 }
