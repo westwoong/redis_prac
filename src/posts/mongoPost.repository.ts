@@ -20,6 +20,10 @@ export class MongoPostRepository {
     async create(createPostDto: CreatePostDto): Promise<Post> {
         const { userId, userName, title, content } = createPostDto;
 
+        if(typeof userId === 'string') {
+            throw new Error('userId = number만 가능');
+        }
+
         const newPost = new this.postModel({
             user: {
                 userId: new mongoose.Types.ObjectId(userId),
