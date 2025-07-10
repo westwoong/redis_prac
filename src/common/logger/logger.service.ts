@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Log } from '../schema/log.schema';
+import { Log } from './schema/log.schema';
 
 @Injectable()
 export class LoggerService {

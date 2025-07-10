@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
-import { Log, LogSchema } from "../schema/log.schema";
+import { Log, LogSchema } from "./schema/log.schema";
 import { LoggerService } from './logger.service';
 
 @Global()
