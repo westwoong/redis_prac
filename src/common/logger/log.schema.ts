@@ -18,7 +18,7 @@ enum LogType {
 }
 
 @Schema({
-  timestamps: { createdAt: Date.now(), updatedAt: Date.now() },
+  timestamps: true,
   collection: "logs",
 })
 export class Log {
