@@ -6,6 +6,7 @@ import { ScoreModule } from "./score/score.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { LoggerModule } from "./common/logger/logger.module";
+import { PostModule } from './posts/post.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { LoggerModule } from "./common/logger/logger.module";
         return { uri: mongoUrl };
       },
     }),
+    PostModule,
   ],
   providers: [],
 })
