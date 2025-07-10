@@ -21,7 +21,7 @@ import { PostModule } from './posts/post.module';
     LoggerModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const mongoUrl = configService.get<string>('MONGODB_URL');
         if (!mongoUrl) {
