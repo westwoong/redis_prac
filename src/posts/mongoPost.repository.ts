@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Post, PostDocument } from './schema/post.schema';
-import * as mongoose from 'mongoose';
 
 export interface CreatePostDto {
     userId: string;
@@ -21,7 +20,7 @@ export class MongoPostRepository {
         const { userId, userName, title, content } = createPostDto;
 
         if(typeof userId === 'string') {
-            throw new Error('userId = number만 가능');
+            throw new BadRequestException('userId = number만 가능');
         }
 
         const newPost = new this.postModel({
