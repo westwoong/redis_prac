@@ -1,0 +1,56 @@
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+export type LogDocument = Log & Document;
+enum LogLevel {
+  error,
+  warn,
+  info,
+  debug
+}
+
+enum LogType {
+  auth,
+  system,
+  request,
+  query,
+  exception,
+  error,
+  business
+}
+
+@Schema({
+  timestamps: { createdAt: Date.now(), updatedAt: Date.now() },
+  collection: "logs",
+})
+export class Log {
+  @Prop({ required: true, enum: LogLevel })
+  errorLevel: LogLevel
+
+  @Prop({ required: true })
+  message: string;
+
+  @Prop({ required: true, enum: LogType })
+  type: LogType;
+
+  @Prop()
+  userId?: number;
+
+  @Prop()
+  httpMethod?: string;
+
+  @Prop()
+  url?: string;
+
+  @Prop()
+  statusCode?: number;
+
+  @Prop()
+  errorMessage?: string;
+
+  @Prop({ type: Date, required: true })
+  createdAt: Date;
+
+  @Prop({ type: Date, required: true })
+  updatedAt: Date;
+}
+
+export const LogSchema = SchemaFactory.createForClass(Log);
