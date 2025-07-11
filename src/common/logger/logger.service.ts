@@ -14,10 +14,9 @@ export class LoggerService {
     async saveLog(logData: Log) {
         this.localLogger.log(logData);
         try {
-            const KST_TIME = new Date(Date.now() + 9 * 60 * 60 * 1000);
             const logDataSetup = {
                 ...logData,
-                createdAt: KST_TIME,
+                createdAt: new Date(),
             }
             const log = new this.logModel(logDataSetup);
             const result = await log.save();
