@@ -11,18 +11,22 @@ export class LoggerService {
         private readonly logModel: Model<Log>
     ) {}
 
-    async saveLog(logData: Log) {
-        this.localLogger.log(logData);
+    async saveLog(logData: Partial<Log>): Promise<boolean> {
         try {
-            const logDataSetup = {
+            const logDataWithDefaults = {
                 ...logData,
-                createdAt: new Date(),
-            }
-            const log = new this.logModel(logDataSetup);
-            const result = await log.save();
-            this.localLogger.log(`mongodb 저장 성공: ${result}`);
+                createdAt: logData.createdAt || new Date(),
+                updatedAt: logData.updatedAt || new Date(),
+            };
+
+            this.localLogger.log(logDataWithDefaults);
+
+            const log = new this.logModel(logDataWithDefaults);
+            const result = await log.save();            
+            this.localLogger.debug(`MongoDB 로그 저장 성공 - ID: ${result._id}`);
+            return true;
         } catch (error) {
-            console.error(error);
+            this.localLogger.error(`MongoDB 로그 저장 실패: ${error.message}`, error.stack);
             return false;
         }
     }
