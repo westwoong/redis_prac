@@ -46,7 +46,7 @@ export class Log {
   @Prop()
   errorMessage?: string;
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, required: true, default: () => new Date(), expires: 60 }) // 60초 TTL 테스트 (60초 후 삭제)
   createdAt: Date;
 
   @Prop({ type: Date, required: true })
