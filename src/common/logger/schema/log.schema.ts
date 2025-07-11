@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 export type LogDocument = Log & Document;
-enum LogLevel {
+export enum LogLevel {
   error,
   warn,
   info,
   debug
 }
 
-enum LogType {
+export enum LogType {
   auth,
   system,
   request,
